@@ -68,3 +68,9 @@ class ResourceAllocationSimulator(QMainWindow):
             else:
                 QMessageBox.warning(self, "Allocation Failed", f"Resource {resource_id} is fully allocated!")
         self.draw_graph()
+    def request_resource(self):
+        process_id, ok1 = QInputDialog.getText(self, "Request Resource", "Enter process ID:")
+        resource_id, ok2 = QInputDialog.getText(self, "Request Resource", "Enter resource ID:")
+        if ok1 and ok2 and process_id in self.graph and resource_id in self.graph:
+            self.graph.add_edge(process_id, resource_id)
+        self.draw_graph()
