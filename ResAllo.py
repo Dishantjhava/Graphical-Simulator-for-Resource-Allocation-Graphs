@@ -91,3 +91,22 @@ class ResourceAllocationSimulator(QMainWindow):
             QMessageBox.warning(self, "Deadlock Detected", f"Deadlock Detected!\nCycle: {cycle_str}")
         except nx.NetworkXNoCycle:
             QMessageBox.information(self, "No Deadlock", "No Deadlock Detected")
+    def draw_graph(self):
+        self.ax.clear()
+        self.pos = nx.spring_layout(self.graph, k=1)
+        
+        labels = {node: node for node in self.graph.nodes}
+        for res, cap in self.resource_capacities.items():
+            labels[res] = f"{res}\n{self.resource_allocations[res]}/{cap}"
+        
+        nx.draw(self.graph, self.pos, with_labels=True, labels=labels, node_size=3000, node_color="lightblue", edge_color="black", arrows=True, ax=self.ax)
+        nx.draw_networkx_edges(self.graph, self.pos, connectionstyle='arc3,rad=0.3', edge_color='black', ax=self.ax)
+        
+        self.canvas.draw()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = ResourceAllocationSimulator()
+    window.show()
+    sys.exit(app.exec_())
+
