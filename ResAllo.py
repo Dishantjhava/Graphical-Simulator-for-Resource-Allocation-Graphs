@@ -50,3 +50,11 @@ class ResourceAllocationSimulator(QMainWindow):
         if ok and process_id and process_id not in self.graph:
             self.graph.add_node(process_id, type='process')
             self.draw_graph()
+    def add_resource(self):
+        resource_id, ok1 = QInputDialog.getText(self, "Add Resource", "Enter resource ID (e.g., R1):")
+        capacity, ok2 = QInputDialog.getInt(self, "Resource Capacity", "Enter maximum capacity:", min=1)
+        if ok1 and ok2 and resource_id and resource_id not in self.graph:
+            self.graph.add_node(resource_id, type='resource')
+            self.resource_capacities[resource_id] = capacity
+            self.resource_allocations[resource_id] = 0
+            self.draw_graph()
