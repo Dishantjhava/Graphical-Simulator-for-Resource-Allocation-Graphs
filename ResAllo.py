@@ -84,3 +84,10 @@ class ResourceAllocationSimulator(QMainWindow):
             elif self.graph.has_edge(process_id, resource_id):
                 self.graph.remove_edge(process_id, resource_id)
         self.draw_graph()
+    def detect_deadlock(self):
+        try:
+            cycle = nx.find_cycle(self.graph, orientation='original')
+            cycle_str = " -> ".join([f"{edge[0]} → {edge[1]}" for edge in cycle])
+            QMessageBox.warning(self, "Deadlock Detected", f"Deadlock Detected!\nCycle: {cycle_str}")
+        except nx.NetworkXNoCycle:
+            QMessageBox.information(self, "No Deadlock", "No Deadlock Detected")
