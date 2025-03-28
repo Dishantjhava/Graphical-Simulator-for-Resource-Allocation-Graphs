@@ -74,3 +74,13 @@ class ResourceAllocationSimulator(QMainWindow):
         if ok1 and ok2 and process_id in self.graph and resource_id in self.graph:
             self.graph.add_edge(process_id, resource_id)
         self.draw_graph()
+    def release_resource(self):
+        process_id, ok1 = QInputDialog.getText(self, "Release Resource", "Enter process ID:")
+        resource_id, ok2 = QInputDialog.getText(self, "Release Resource", "Enter resource ID:")
+        if ok1 and ok2 and process_id in self.graph and resource_id in self.graph:
+            if self.graph.has_edge(resource_id, process_id):
+                self.graph.remove_edge(resource_id, process_id)
+                self.resource_allocations[resource_id] = max(0, self.resource_allocations[resource_id] - 1)
+            elif self.graph.has_edge(process_id, resource_id):
+                self.graph.remove_edge(process_id, resource_id)
+        self.draw_graph()
