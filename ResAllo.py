@@ -58,3 +58,13 @@ class ResourceAllocationSimulator(QMainWindow):
             self.resource_capacities[resource_id] = capacity
             self.resource_allocations[resource_id] = 0
             self.draw_graph()
+    def allocate_resource(self):
+        process_id, ok1 = QInputDialog.getText(self, "Allocate Resource", "Enter process ID:")
+        resource_id, ok2 = QInputDialog.getText(self, "Allocate Resource", "Enter resource ID:")
+        if ok1 and ok2 and process_id in self.graph and resource_id in self.graph and self.graph.nodes[process_id]['type'] == 'process':
+            if self.resource_allocations[resource_id] < self.resource_capacities[resource_id]:
+                self.graph.add_edge(resource_id, process_id)
+                self.resource_allocations[resource_id] += 1
+            else:
+                QMessageBox.warning(self, "Allocation Failed", f"Resource {resource_id} is fully allocated!")
+        self.draw_graph()
