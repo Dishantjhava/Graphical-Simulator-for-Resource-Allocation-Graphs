@@ -45,3 +45,8 @@ class ResourceAllocationSimulator(QMainWindow):
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
+    def add_process(self):
+        process_id, ok = QInputDialog.getText(self, "Add Process", "Enter process ID (e.g., P1):")
+        if ok and process_id and process_id not in self.graph:
+            self.graph.add_node(process_id, type='process')
+            self.draw_graph()
